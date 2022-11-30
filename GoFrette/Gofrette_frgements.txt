@@ -1,0 +1,73 @@
+//B8 00 CA 9A 3B                                                  mov     eax, 3B9ACA00h
+//E8 79 7F F8 FF                                                  call    time_Sleep      ; Call Procedure
+//48 8B 44 24 28                                                  mov     rax, [rsp+58h+var_30]
+//48 8B 54 24 60                                                  mov     rdx, [rsp+58h+arg_0]
+//48 8B 72 50                                                     mov     rsi, [rdx+50h]
+//48 89 C3                                                        mov     rbx, rax
+//B9 01 00 00 00                                                  mov     ecx, 1
+//48 89 CF                                                        mov     rdi, rcx
+//48 8B 44 24 68                                                  mov     rax, [rsp+58h+arg_8]
+//FF D6                                                           call    rsi             ; Indirect Call Near Procedure
+//48 85 DB                                                        test    rbx, rbx        ; Logical Compare
+//74 D1                                                           jz      short loc_4D661D ; Jump if Zero (ZF=1)
+//44 0F 11 7C 24 40                                               movups  [rsp+58h+var_18], xmm15 ; Move Unaligned Four Packed Single-FP
+//48 8D 15 67 C7 00 00                                            lea     rdx, RTYPE_string ; Load Effective Address
+//48 89 54 24 40                                                  mov     qword ptr [rsp+58h+var_18], rdx
+//4C 8D 05 C3 33 05 00                                            lea     r8, off_529A28  ; "[-] Lost connection"
+
+
+
+
+
+
+//48 8D 15 E9 99 02 00                            lea     rdx, aC_1       ; "/C"
+//48 89 94 24 A0 00 00 00                         mov     [rsp+178h+var_D8], rdx
+//48 C7 84 24 A8 00 00 00 02 00 00 00             mov     [rsp+178h+var_D0], 2
+//4C 8B 44 24 58                                  mov     r8, [rsp+178h+var_120]
+//4C 89 84 24 B0 00 00 00                         mov     [rsp+178h+var_C8], r8
+//4C 8B 44 24 40                                  mov     r8, [rsp+178h+var_138]
+//4C 89 84 24 B8 00 00 00                         mov     [rsp+178h+var_C0], r8
+//48 8D 05 DB AB 02 00                            lea     rax, aPowershell ; "powershell"
+//BB 0A 00 00 00                                  mov     ebx, 0Ah
+//BF 02 00 00 00                                  mov     edi, 2
+//48 89 FE                                        mov     rsi, rdi
+//E8 A7 B5 FF FF                                  call    os_exec_Command ; Call Procedure
+
+
+
+
+//49 83 F9 04                                                     cmp     r9, 4           ; Compare Two Operands
+//0F 85 89 00 00 00                                               jnz     loc_4D6413      ; Jump if Not Zero (ZF=0)
+//41 81 38 65 78 69 74                                            cmp     dword ptr [r8], 'tixe' ; Compare Two Operands
+//74 61                                                           jz      short loc_4D63F4 ; Jump if Zero (ZF=1)
+//41 81 38 68 65 6C 70                                            cmp     dword ptr [r8], 'pleh' ; Compare Two Operands
+//75 77                                                           jnz     short loc_4D6413 ; Jump if Not Zero (ZF=0)
+//48 8D 05 1D D5 00 00                                            lea     rax, RTYPE__20_uint8 ; Load Effective Address
+//E8 38 69 F3 FF                                                  call    runtime_newobject ; Call Procedure
+//48 B9 65 78 69 74 20 3A 20 65                                   mov     rcx, 'e : tixe'
+//48 89 08                                                        mov     [rax], rcx
+//48 B9 20 3A 20 65 78 69 74 20                                   mov     rcx, ' tixe : '
+//48 89 48 04                                                     mov     [rax+4], rcx
+//48 B9 74 65 72 6D 69 6E 61 6C                                   mov     rcx, 'lanimret'
+//48 89 48 0C                                                     mov     [rax+0Ch], rcx
+//48 8B 4C 24 78                                                  mov     rcx, [rsp+178h+var_100]
+
+
+
+
+
+//48 89 FE                                                        mov     rsi, rdi
+//E8 F6 83 FD FF                                                  call    fmt_Fprintln    ; Call Procedure
+//44 0F 11 7C 24 30                                               movups  [rsp+58h+var_28], xmm15 ; Move Unaligned Four Packed Single-FP
+//48 8D 15 29 C7 00 00                                            lea     rdx, RTYPE_string ; Load Effective Address
+//48 89 54 24 30                                                  mov     qword ptr [rsp+58h+var_28], rdx
+//48 8D 15 95 33 05 00                                            lea     rdx, off_529A38 ; "[*] Trying to reconnect"
+//48 89 54 24 38                                                  mov     qword ptr [rsp+58h+var_28+8], rdx
+//48 8B 1D 79 18 10 00                                            mov     rbx, cs:os_Stdout
+//48 8D 05 AA 3C 05 00                                            lea     rax, go_itab__os_File_io_Writer ; Load Effective Address
+//48 8D 4C 24 30                                                  lea     rcx, [rsp+58h+var_28] ; Load Effective Address
+//BF 01 00 00 00                                                  mov     edi, 1
+//48 89 FE                                                        mov     rsi, rdi
+//E8 B8 83 FD FF                                                  call    fmt_Fprintln    ; Call Procedure
+//E8 B3 F8 FF FF                                                  call    main_listen     ; Call Procedure
+
