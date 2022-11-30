@@ -1,0 +1,53 @@
+//8B 45 04                                        mov     eax, [rbp+130h+i]
+//FF C0                                           inc     eax             ; Increment by 1
+//89 45 04                                        mov     [rbp+130h+i], eax
+//48 63 45 04                                     movsxd  rax, [rbp+130h+i] ; Move with Sign-Extend Doubleword
+//48 B9 E0 1A 2C 94 FB 7F 00 00                   mov     rcx, 7FFB942C1AE0h
+//48 03 C1                                        add     rax, rcx        ; Add
+//48 C7 44 24 20 00 00 00 00                      mov     [rsp+160h+lpNumberOfBytesWritten], 0 ; lpNumberOfBytesWritten
+//41 B9 01 00 00 00                               mov     r9d, 1          ; nSize
+//4C 8B 85 18 01 00 00                            mov     r8, [rbp+130h+lpBuffer] ; lpBuffer
+//48 8B D0                                        mov     rdx, rax        ; lpBaseAddress
+//48 8B 4D 48                                     mov     rcx, [rbp+130h+hw] ; hProcess
+//FF 15 29 E6 00 00                               call    cs:__imp_WriteProcessMemory ; Indirect Call Near Procedure
+
+
+
+//C7 45 04 00 00 00 00                            mov     [rbp+130h+i], 0
+//C7 45 24 00 00 00 00                            mov     [rbp+130h+tpid], 0
+//48 8D 0D C8 82 00 00                            lea     rcx, pn         ; "ProcessHacker.exe"
+//E8 3E F9 FF FF                                  call    j_?GetPID@@YAKPEBD@Z ; GetPID(char const *)
+//89 45 24                                        mov     [rbp+130h+tpid], eax
+//44 8B 45 24                                     mov     r8d, [rbp+130h+tpid] ; dwProcessId
+//33 D2                                           xor     edx, edx        ; bInheritHandle
+//B9 FF FF 1F 00                                  mov     ecx, 1FFFFFh    ; dwDesiredAccess
+//FF 15 8F E6 00 00                               call    cs:__imp_OpenProcess ; Indirect Call Near Procedure
+
+
+
+//C7 45 04 00 00 00 00                                            mov     [rbp+260h+procId], 0
+//33 D2                                                           xor     edx, edx        ; th32ProcessID
+//B9 02 00 00 00                                                  mov     ecx, 2          ; dwFlags
+//E8 63 F9 FF FF                                                  call    j_CreateToolhelp32Snapshot_0 ; Call Procedure
+//48 89 45 28                                                     mov     [rbp+260h+hSnap], rax
+//48 83 7D 28 FF                                                  cmp     [rbp+260h+hSnap], 0FFFFFFFFFFFFFFFFh ; Compare Two Operands
+//74 59                                                           jz      short loc_1400118A0 ; Jump if Zero (ZF=1)
+//C7 45 50 30 01 00 00                                            mov     [rbp+260h+pE.dwSize], 130h
+//48 8D 55 50                                                     lea     rdx, [rbp+260h+pE] ; lppe
+//48 8B 4D 28                                                     mov     rcx, [rbp+260h+hSnap] ; hSnapshot
+//E8 B6 FA FF FF                                                  call    j_Process32First_0 ; Call Procedure
+//85 C0                                                           test    eax, eax        ; Logical Compare
+//74 41                                                           jz      short loc_1400118A0 ; Jump if Zero (ZF=1)
+
+
+
+//48 8D 0D 45 82 00 00                            lea     rcx, Command    ; "pause"
+//FF 15 47 E9 00 00                               call    cs:__imp_system ; Indirect Call Near Procedure
+//33 C0                                           xor     eax, eax        ; Logical Exclusive OR
+
+
+
+//48 63 45 04                                     movsxd  rax, [rbp+130h+i] ; Move with Sign-Extend Doubleword
+//48 8D 0D 60 A6 00 00                            lea     rcx, ?lv2@@3PA_KA ; unsigned __int64 near * lv2
+//48 8D 04 C1                                     lea     rax, [rcx+rax*8] ; Load Effective Address
+//48 89 85 18 01 00 00                            mov     [rbp+130h+lpBuffer], rax
